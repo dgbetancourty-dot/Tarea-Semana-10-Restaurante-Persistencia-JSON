@@ -2,7 +2,7 @@
 
 ## Estudiante
 
-**Nombre: DENNIS BETANCOURT 
+**Nombre: DENNIS BETANCOURT** 
 
 ## Descripción
 
