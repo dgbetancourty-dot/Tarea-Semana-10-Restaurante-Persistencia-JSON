@@ -1,51 +1,84 @@
 from modelos.producto import Producto
-from modelos.bebida import Bebida
-from modelos.cliente import Cliente
+from modelos.usuario import Usuario
 
 
 class Restaurante:
     def __init__(self):
-        self.productos = []
-        self.clientes = []
+        self._productos: list[Producto] = []
+        self._usuarios: list[Usuario] = []
 
     def registrar_producto(self, producto: Producto) -> bool:
-        for producto_existente in self.productos:
-            if producto_existente.codigo == producto.codigo:
-                return False
+        if self.buscar_producto(producto.codigo) is not None:
+            return False
 
-        self.productos.append(producto)
+        self._productos.append(producto)
         return True
 
-    def registrar_cliente(self, cliente: Cliente) -> bool:
-        for cliente_existente in self.clientes:
-            if cliente_existente.identificacion == cliente.identificacion:
-                return False
+    def buscar_producto(self, codigo: str) -> Producto | None:
+        for producto in self._productos:
+            if producto.codigo.lower() == codigo.lower():
+                return producto
 
-        self.clientes.append(cliente)
+        return None
+
+    def actualizar_producto(
+        self,
+        codigo: str,
+        nuevo_nombre: str,
+        nuevo_precio: float,
+        nueva_categoria: str
+    ) -> bool:
+        producto = self.buscar_producto(codigo)
+
+        if producto is None:
+            return False
+
+        producto.nombre = nuevo_nombre
+        producto.precio = nuevo_precio
+        producto.categoria = nueva_categoria
         return True
 
-    def listar_productos(self):
-        print("Entré al método listar_productos")
+    def eliminar_producto(self, codigo: str) -> bool:
+        producto = self.buscar_producto(codigo)
 
-        if not self.productos:
-            print("\nNo existen productos registrados.")
+        if producto is None:
+            return False
+
+        self._productos.remove(producto)
+        return True
+
+    def listar_productos(self) -> None:
+        if not self._productos:
+            print("No hay productos registrados.")
             return
 
-        print("\n===== LISTA DE PRODUCTOS =====")
-
-        for producto in self.productos:
+        for producto in self._productos:
             producto.mostrar_informacion()
             print("-" * 30)
 
-    def listar_clientes(self):
-        print("Entré al método listar_clientes")
+    def obtener_categorias(self) -> set[str]:
+        categorias = {
+            producto.categoria
+            for producto in self._productos
+        }
+        return categorias
 
-        if not self.clientes:
-            print("\nNo existen clientes registrados.")
+    def registrar_usuario(self, usuario: Usuario) -> bool:
+        for usuario_registrado in self._usuarios:
+            if (
+                usuario_registrado.identificacion
+                == usuario.identificacion
+            ):
+                return False
+
+        self._usuarios.append(usuario)
+        return True
+
+    def listar_usuarios(self) -> None:
+        if not self._usuarios:
+            print("No hay usuarios registrados.")
             return
 
-        print("\n===== LISTA DE CLIENTES =====")
-
-        for cliente in self.clientes:
-            cliente.mostrar_informacion()
+        for usuario in self._usuarios:
+            usuario.mostrar_informacion()
             print("-" * 30)
