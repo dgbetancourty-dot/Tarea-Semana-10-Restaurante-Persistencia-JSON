@@ -3,9 +3,19 @@ from modelos.usuario import Usuario
 
 
 class Restaurante:
-    def __init__(self):
+    def __init__(self) -> None:
         self._productos: list[Producto] = []
         self._usuarios: list[Usuario] = []
+
+    def cargar_productos(
+        self,
+        productos_guardados: list[Producto]
+    ) -> None:
+        for producto in productos_guardados:
+            self.registrar_producto(producto)
+
+    def obtener_productos(self) -> list[Producto]:
+        return self._productos.copy()
 
     def registrar_producto(self, producto: Producto) -> bool:
         if self.buscar_producto(producto.codigo) is not None:

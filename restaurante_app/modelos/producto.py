@@ -5,11 +5,23 @@ class Producto:
         nombre: str,
         precio: float,
         categoria: str
-    ):
-        self._codigo = codigo
-        self._nombre = nombre
+    ) -> None:
+        if not codigo.strip():
+            raise ValueError("El código no puede estar vacío.")
+
+        if not nombre.strip():
+            raise ValueError("El nombre no puede estar vacío.")
+
+        if precio <= 0:
+            raise ValueError("El precio debe ser mayor que cero.")
+
+        if not categoria.strip():
+            raise ValueError("La categoría no puede estar vacía.")
+
+        self._codigo = codigo.strip()
+        self._nombre = nombre.strip()
         self._precio = precio
-        self._categoria = categoria
+        self._categoria = categoria.strip()
 
     @property
     def codigo(self) -> str:
@@ -21,7 +33,10 @@ class Producto:
 
     @nombre.setter
     def nombre(self, nuevo_nombre: str) -> None:
-        self._nombre = nuevo_nombre
+        if not nuevo_nombre.strip():
+            raise ValueError("El nombre no puede estar vacío.")
+
+        self._nombre = nuevo_nombre.strip()
 
     @property
     def precio(self) -> float:
@@ -29,6 +44,9 @@ class Producto:
 
     @precio.setter
     def precio(self, nuevo_precio: float) -> None:
+        if nuevo_precio <= 0:
+            raise ValueError("El precio debe ser mayor que cero.")
+
         self._precio = nuevo_precio
 
     @property
@@ -37,7 +55,18 @@ class Producto:
 
     @categoria.setter
     def categoria(self, nueva_categoria: str) -> None:
-        self._categoria = nueva_categoria
+        if not nueva_categoria.strip():
+            raise ValueError("La categoría no puede estar vacía.")
+
+        self._categoria = nueva_categoria.strip()
+
+    def a_diccionario(self) -> dict:
+        return {
+            "codigo": self._codigo,
+            "nombre": self._nombre,
+            "precio": self._precio,
+            "categoria": self._categoria
+        }
 
     def mostrar_informacion(self) -> None:
         print(f"Código: {self._codigo}")
